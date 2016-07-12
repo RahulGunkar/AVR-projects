@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Atmel Studio Solution File, Format Version 11.00
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "encoder1.0", "encoder1.0\encoder1.0.cproj", "{ADDD353D-7C4F-4B4F-90F9-96B79D0A195A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|AVR = Debug|AVR
+		Release|AVR = Release|AVR
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ADDD353D-7C4F-4B4F-90F9-96B79D0A195A}.Debug|AVR.ActiveCfg = Debug|AVR
+		{ADDD353D-7C4F-4B4F-90F9-96B79D0A195A}.Debug|AVR.Build.0 = Debug|AVR
+		{ADDD353D-7C4F-4B4F-90F9-96B79D0A195A}.Release|AVR.ActiveCfg = Release|AVR
+		{ADDD353D-7C4F-4B4F-90F9-96B79D0A195A}.Release|AVR.Build.0 = Release|AVR
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

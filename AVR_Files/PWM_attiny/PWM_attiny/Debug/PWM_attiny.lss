@@ -1,0 +1,294 @@
+
+PWM_attiny.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         00000130  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .bss          00000002  00800060  00800060  000001a4  2**0
+                  ALLOC
+  2 .comment      00000030  00000000  00000000  000001a4  2**0
+                  CONTENTS, READONLY
+  3 .debug_aranges 00000038  00000000  00000000  000001d4  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  4 .debug_info   000001ce  00000000  00000000  0000020c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_abbrev 0000016a  00000000  00000000  000003da  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_line   0000018c  00000000  00000000  00000544  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_frame  00000068  00000000  00000000  000006d0  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_str    0000019d  00000000  00000000  00000738  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_loc    000001bc  00000000  00000000  000008d5  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_ranges 00000028  00000000  00000000  00000a91  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	09 c0       	rjmp	.+18     	; 0x14 <__ctors_end>
+   2:	16 c0       	rjmp	.+44     	; 0x30 <__bad_interrupt>
+   4:	15 c0       	rjmp	.+42     	; 0x30 <__bad_interrupt>
+   6:	14 c0       	rjmp	.+40     	; 0x30 <__bad_interrupt>
+   8:	13 c0       	rjmp	.+38     	; 0x30 <__bad_interrupt>
+   a:	12 c0       	rjmp	.+36     	; 0x30 <__bad_interrupt>
+   c:	11 c0       	rjmp	.+34     	; 0x30 <__bad_interrupt>
+   e:	10 c0       	rjmp	.+32     	; 0x30 <__bad_interrupt>
+  10:	0f c0       	rjmp	.+30     	; 0x30 <__bad_interrupt>
+  12:	5c c0       	rjmp	.+184    	; 0xcc <__vector_9>
+
+00000014 <__ctors_end>:
+  14:	11 24       	eor	r1, r1
+  16:	1f be       	out	0x3f, r1	; 63
+  18:	cf e9       	ldi	r28, 0x9F	; 159
+  1a:	cd bf       	out	0x3d, r28	; 61
+
+0000001c <__do_clear_bss>:
+  1c:	20 e0       	ldi	r18, 0x00	; 0
+  1e:	a0 e6       	ldi	r26, 0x60	; 96
+  20:	b0 e0       	ldi	r27, 0x00	; 0
+  22:	01 c0       	rjmp	.+2      	; 0x26 <.do_clear_bss_start>
+
+00000024 <.do_clear_bss_loop>:
+  24:	1d 92       	st	X+, r1
+
+00000026 <.do_clear_bss_start>:
+  26:	a2 36       	cpi	r26, 0x62	; 98
+  28:	b2 07       	cpc	r27, r18
+  2a:	e1 f7       	brne	.-8      	; 0x24 <.do_clear_bss_loop>
+  2c:	64 d0       	rcall	.+200    	; 0xf6 <main>
+  2e:	7e c0       	rjmp	.+252    	; 0x12c <_exit>
+
+00000030 <__bad_interrupt>:
+  30:	e7 cf       	rjmp	.-50     	; 0x0 <__vectors>
+
+00000032 <pwm>:
+volatile int val=0;
+
+void pwm(int a)
+{
+	
+	if(a<= 1024 && a>=900)
+  32:	9c 01       	movw	r18, r24
+  34:	24 58       	subi	r18, 0x84	; 132
+  36:	33 40       	sbci	r19, 0x03	; 3
+  38:	2d 37       	cpi	r18, 0x7D	; 125
+  3a:	31 05       	cpc	r19, r1
+  3c:	18 f4       	brcc	.+6      	; 0x44 <__SREG__+0x5>
+	{
+		OCR0A=200;
+  3e:	88 ec       	ldi	r24, 0xC8	; 200
+  40:	86 bf       	out	0x36, r24	; 54
+  42:	08 95       	ret
+			
+	}
+	else if(a<900 && a>800)
+  44:	9c 01       	movw	r18, r24
+  46:	21 52       	subi	r18, 0x21	; 33
+  48:	33 40       	sbci	r19, 0x03	; 3
+  4a:	23 36       	cpi	r18, 0x63	; 99
+  4c:	31 05       	cpc	r19, r1
+  4e:	18 f4       	brcc	.+6      	; 0x56 <__SREG__+0x17>
+	{
+		OCR0A=180;
+  50:	84 eb       	ldi	r24, 0xB4	; 180
+  52:	86 bf       	out	0x36, r24	; 54
+  54:	08 95       	ret
+	}
+	else if(a<700 && a>600)
+  56:	9c 01       	movw	r18, r24
+  58:	29 55       	subi	r18, 0x59	; 89
+  5a:	32 40       	sbci	r19, 0x02	; 2
+  5c:	23 36       	cpi	r18, 0x63	; 99
+  5e:	31 05       	cpc	r19, r1
+  60:	18 f4       	brcc	.+6      	; 0x68 <__SREG__+0x29>
+	{
+		OCR0A=150;
+  62:	86 e9       	ldi	r24, 0x96	; 150
+  64:	86 bf       	out	0x36, r24	; 54
+  66:	08 95       	ret
+	}
+	
+	else if(a<600 && a>500)
+  68:	9c 01       	movw	r18, r24
+  6a:	25 5f       	subi	r18, 0xF5	; 245
+  6c:	31 40       	sbci	r19, 0x01	; 1
+  6e:	23 36       	cpi	r18, 0x63	; 99
+  70:	31 05       	cpc	r19, r1
+  72:	18 f4       	brcc	.+6      	; 0x7a <__SREG__+0x3b>
+	{
+		OCR0A=130;
+  74:	82 e8       	ldi	r24, 0x82	; 130
+  76:	86 bf       	out	0x36, r24	; 54
+  78:	08 95       	ret
+	}
+	else if(a<500 && a>400)
+  7a:	9c 01       	movw	r18, r24
+  7c:	21 59       	subi	r18, 0x91	; 145
+  7e:	31 40       	sbci	r19, 0x01	; 1
+  80:	23 36       	cpi	r18, 0x63	; 99
+  82:	31 05       	cpc	r19, r1
+  84:	18 f4       	brcc	.+6      	; 0x8c <__SREG__+0x4d>
+	{
+		OCR0A=100;
+  86:	84 e6       	ldi	r24, 0x64	; 100
+  88:	86 bf       	out	0x36, r24	; 54
+  8a:	08 95       	ret
+	}
+	else if(a<400 && a>300)
+  8c:	9c 01       	movw	r18, r24
+  8e:	2d 52       	subi	r18, 0x2D	; 45
+  90:	31 40       	sbci	r19, 0x01	; 1
+  92:	23 36       	cpi	r18, 0x63	; 99
+  94:	31 05       	cpc	r19, r1
+  96:	18 f4       	brcc	.+6      	; 0x9e <__SREG__+0x5f>
+	{
+		OCR0A=80;
+  98:	80 e5       	ldi	r24, 0x50	; 80
+  9a:	86 bf       	out	0x36, r24	; 54
+  9c:	08 95       	ret
+	}
+	else if(a<300 && a>200)
+  9e:	89 5c       	subi	r24, 0xC9	; 201
+  a0:	91 09       	sbc	r25, r1
+  a2:	83 36       	cpi	r24, 0x63	; 99
+  a4:	91 05       	cpc	r25, r1
+  a6:	18 f4       	brcc	.+6      	; 0xae <__stack+0xf>
+	{
+		OCR0A=50;
+  a8:	82 e3       	ldi	r24, 0x32	; 50
+  aa:	86 bf       	out	0x36, r24	; 54
+  ac:	08 95       	ret
+	}
+	else
+		OCR0A=30;
+  ae:	8e e1       	ldi	r24, 0x1E	; 30
+  b0:	86 bf       	out	0x36, r24	; 54
+  b2:	08 95       	ret
+
+000000b4 <DELAY>:
+}	
+
+void DELAY(int i)
+
+{
+	while(i--)
+  b4:	00 97       	sbiw	r24, 0x00	; 0
+  b6:	49 f0       	breq	.+18     	; 0xca <DELAY+0x16>
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+  b8:	ef ec       	ldi	r30, 0xCF	; 207
+  ba:	f7 e0       	ldi	r31, 0x07	; 7
+  bc:	31 97       	sbiw	r30, 0x01	; 1
+  be:	f1 f7       	brne	.-4      	; 0xbc <DELAY+0x8>
+  c0:	00 c0       	rjmp	.+0      	; 0xc2 <DELAY+0xe>
+  c2:	00 00       	nop
+  c4:	01 97       	sbiw	r24, 0x01	; 1
+  c6:	00 97       	sbiw	r24, 0x00	; 0
+  c8:	b9 f7       	brne	.-18     	; 0xb8 <DELAY+0x4>
+  ca:	08 95       	ret
+
+000000cc <__vector_9>:
+		_delay_ms(1);
+	}
+}
+
+ISR(ADC_vect)
+{
+  cc:	1f 92       	push	r1
+  ce:	0f 92       	push	r0
+  d0:	0f b6       	in	r0, 0x3f	; 63
+  d2:	0f 92       	push	r0
+  d4:	11 24       	eor	r1, r1
+  d6:	8f 93       	push	r24
+  d8:	9f 93       	push	r25
+	
+	//uint8_t low=ADCL;
+	val =ADC;
+  da:	84 b1       	in	r24, 0x04	; 4
+  dc:	95 b1       	in	r25, 0x05	; 5
+  de:	90 93 61 00 	sts	0x0061, r25
+  e2:	80 93 60 00 	sts	0x0060, r24
+	ADCSRA|=(1<<ADSC);
+  e6:	36 9a       	sbi	0x06, 6	; 6
+	
+}
+  e8:	9f 91       	pop	r25
+  ea:	8f 91       	pop	r24
+  ec:	0f 90       	pop	r0
+  ee:	0f be       	out	0x3f, r0	; 63
+  f0:	0f 90       	pop	r0
+  f2:	1f 90       	pop	r1
+  f4:	18 95       	reti
+
+000000f6 <main>:
+
+
+
+int main(void)
+{
+	DDRB |=1<<PINB0;
+  f6:	b8 9a       	sbi	0x17, 0	; 23
+	DDRB&=~(1<<PINB5);
+  f8:	bd 98       	cbi	0x17, 5	; 23
+	sei();
+  fa:	78 94       	sei
+	TCCR0A |=1<<COM0A1 |1<<WGM01|1<<WGM00;
+  fc:	8f b5       	in	r24, 0x2f	; 47
+  fe:	83 68       	ori	r24, 0x83	; 131
+ 100:	8f bd       	out	0x2f, r24	; 47
+	TCCR0B |=1<<CS00;
+ 102:	83 b7       	in	r24, 0x33	; 51
+ 104:	81 60       	ori	r24, 0x01	; 1
+ 106:	83 bf       	out	0x33, r24	; 51
+	//ADMUX |=~(1<<REFS0);
+	ADCSRA |=1<<ADEN | 1<<ADIE |1<<ADPS0;
+ 108:	86 b1       	in	r24, 0x06	; 6
+ 10a:	89 68       	ori	r24, 0x89	; 137
+ 10c:	86 b9       	out	0x06, r24	; 6
+	
+	ADCSRA |=1<<ADSC;
+ 10e:	36 9a       	sbi	0x06, 6	; 6
+ 110:	c0 e0       	ldi	r28, 0x00	; 0
+    
+	
+	for (int i=0;i<10;i++)
+	{
+		OCR0A=i*20;
+ 112:	c6 bf       	out	0x36, r28	; 54
+		DELAY(2000);
+ 114:	80 ed       	ldi	r24, 0xD0	; 208
+ 116:	97 e0       	ldi	r25, 0x07	; 7
+ 118:	cd df       	rcall	.-102    	; 0xb4 <DELAY>
+ 11a:	cc 5e       	subi	r28, 0xEC	; 236
+	ADCSRA |=1<<ADEN | 1<<ADIE |1<<ADPS0;
+	
+	ADCSRA |=1<<ADSC;
+    
+	
+	for (int i=0;i<10;i++)
+ 11c:	c8 3c       	cpi	r28, 0xC8	; 200
+ 11e:	c9 f7       	brne	.-14     	; 0x112 <main+0x1c>
+		OCR0A=i*20;
+		DELAY(2000);
+	}
+	while(1)
+    {
+		pwm(val);    
+ 120:	80 91 60 00 	lds	r24, 0x0060
+ 124:	90 91 61 00 	lds	r25, 0x0061
+ 128:	84 df       	rcall	.-248    	; 0x32 <pwm>
+ 12a:	fa cf       	rjmp	.-12     	; 0x120 <main+0x2a>
+
+0000012c <_exit>:
+ 12c:	f8 94       	cli
+
+0000012e <__stop_program>:
+ 12e:	ff cf       	rjmp	.-2      	; 0x12e <__stop_program>

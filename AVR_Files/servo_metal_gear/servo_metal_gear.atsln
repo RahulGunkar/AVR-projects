@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Atmel Studio Solution File, Format Version 11.00
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "servo_metal_gear", "servo_metal_gear\servo_metal_gear.cproj", "{3250A85C-02D1-4A90-B584-FEA553A7D292}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|AVR = Debug|AVR
+		Release|AVR = Release|AVR
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3250A85C-02D1-4A90-B584-FEA553A7D292}.Debug|AVR.ActiveCfg = Debug|AVR
+		{3250A85C-02D1-4A90-B584-FEA553A7D292}.Debug|AVR.Build.0 = Debug|AVR
+		{3250A85C-02D1-4A90-B584-FEA553A7D292}.Release|AVR.ActiveCfg = Release|AVR
+		{3250A85C-02D1-4A90-B584-FEA553A7D292}.Release|AVR.Build.0 = Release|AVR
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
